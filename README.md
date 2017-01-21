@@ -1,9 +1,9 @@
-#Aurelia Framework7: Lightweight Mobile App Development Platform
+#Aurelia Framework7: A Lightweight Mobile App Platform
 
 ##Walkthrough
-Quickly build cross-platform apps for Web, iOS, Android, Windows and PWAs using the slick animations and UI components of Framework7, along with the modular, testable and extensible Aurelia Framework.
+Quickly build cross-platform hybrid apps for Web, iOS, Android, Windows and PWAs using the slick animations and UI components of Framework7, along with the modular, testable and extensible Aurelia Framework.
 
-Read more about the project on the [announcement blog post](#).
+Read more about the project on the [announcement blog post](https://blog.flennik.com/a-challenger-for-ionic-aurelia-framework7-63a53e736b8a#.9qtse37zw), and [check out the demo here](http://au7.flennik.com).
 
 ###How to Kick Butt
 This project uses a few open source technologies. What you can do with this project depends on your mastery of their concepts and APIs. Here is your docs reading list to get the most out of this project:
@@ -16,13 +16,13 @@ This project uses a few open source technologies. What you can do with this proj
 ###Adding Functionality to this Project. Coming Soon.
 This no-cruft project includes a minimal Webpack 2 configuration and not much else. Want to trick it out with your favorite plugins and features? Check out these guides (coming soon):
 
-- JAN 29 [Optimize the File Size](#)
-- JAN 29 [Add a Linter -> Clean Code, Baby](#)
-- JAN 29 [Customizing Production Webpack Configuration](#)
-- FEB 5 [Add Modular SASS](#)
-- FEB 12 [Customizing App Based on Platform](#)
-- TBD [Build Your App with TDD](#)
-- TBD [Create a Progressive Web App](#)
+- JAN 29 Optimize the File Size
+- JAN 29 Add a Linter -> Clean Code, Baby
+- JAN 29 Customizing Production Webpack Configuration
+- FEB 5 Add Modular SASS
+- FEB 12 Customizing App Based on Platform
+- TBD Build Your App with TDD
+- TBD Create a Progressive Web App
 
 ###Routing
 We are using Framework7's included router, which supports animations.
