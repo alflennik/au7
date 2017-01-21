@@ -1,0 +1,45 @@
+<template>
+    <!-- Framework7 Default App Scaffolding -->
+    <!-- Status bar overlay for full screen mode (PhoneGap) -->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+      <!-- AURELIA-F7: Use an Aurelia module for the left panel area -->
+      <compose view-model="./pages/left-panel/left-panel"></compose>
+    </div>
+    <!-- Views -->
+    <div class="views">
+      <!-- Your main view should have "view-main" class -->
+      <div class="view view-main">
+        <div class="pages">
+          <!-- AURELIA-F7: Preload all views into the dom, hiding all but the
+          homepage with the `cached` class -->
+          <div repeat.for="view of views" data-page.bind="view.name" class="page"
+          class.bind="view.nav ? 'navbar-fixed toolbar-through' : ''"
+          class.one-time="view.homepage ? '' : 'cached'">
+            <div class="navbar" if.bind="view.nav">
+              <!-- Top Navbar-->
+              <div class="navbar-inner">
+                <!-- AURELIA-F7: Display the left menu on the homepage only,
+                otherwise display a back arrow-->
+                <a href="#" class="back link icon-only" if.bind="!view.homepage">
+                  <i class="icon icon-back"></i>
+                </a>
+                <a href="#" class="open-panel link icon-only" if.bind="view.homepage">
+                  <i class="icon icon-bars"></i>
+                </a>
+                <!-- AURELIA-F7: Show the name of each page on the nav bar -->
+                <div class="center">${view.navTitle}</div>
+              </div>
+            </div>
+            <div class="page-content">
+              <!-- AURELIA-F7: Use Aurelia modules for each page's content -->
+              <compose view-model.bind="view.moduleId"></compose>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
