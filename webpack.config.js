@@ -1,5 +1,11 @@
-var AureliaWebPackPlugin = require('aurelia-webpack-plugin')
-var path = require('path')
+const webpack = require('webpack')
+const AureliaWebPackPlugin = require('aurelia-webpack-plugin')
+const path = require('path')
+
+// Change your configuration based on the environment
+// Set by npm scripts in package.json
+const isProduction = process.env.NODE_ENV === 'production'
+const platform = process.env.PLATFORM // 'default' by default
 
 module.exports = {
   entry: {
@@ -16,7 +22,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         exclude: /node_modules/
       },
       {
@@ -42,9 +48,14 @@ module.exports = {
     ]
   },
   plugins: [
-    new AureliaWebPackPlugin()
+    new AureliaWebPackPlugin(),
+    new webpack.DefinePlugin({
+      // Allows these constants to be accessed by the aurelia app
+      PRODUCTION: JSON.stringify(isProduction),
+      PLATFORM: JSON.stringify(platform)
+    })
   ],
   devServer: {
     port: 3000
   }
-};
+}

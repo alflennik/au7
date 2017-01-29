@@ -1,11 +1,9 @@
-// You can customize the app's content based on the platform
-// This variable is set in npm scripts in package.json
-import {platform} from '../../main.js'
-import {inject} from 'aurelia-framework'
-
-@inject (platform)
+/* eslint-disable no-undef */
 export class Index {
-  constructor (platform) {
-    this.platform = platform
+  constructor () {
+    // You can customize the app's content based on the platform
+    // These variables are set by webpack via package.json
+    this.platform = PLATFORM
+    this.environment = PRODUCTION ? 'production' : 'development'
   }
 }
