@@ -4,8 +4,8 @@
   "description": "Aurelia and Framework7: Lightweight Mobile App Development Platform",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development PLATFORM=default webpack-dev-server -d --progress",
-    "build": "cross-env NODE_ENV=production PLATFORM=default webpack -p --progress"
+    "dev": "webpack-dev-server -d --env.platform=default --progress",
+    "build": "webpack -p --env.production --env.platform=default --progress"
   },
   "author": "Alexander Flenniken",
   "license": "MIT",
