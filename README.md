@@ -1,5 +1,7 @@
 #Aurelia Framework7: A Lightweight Mobile App Platform
 
+![Aurelia Framework7 Hero](http://static.flennik.com/au7-hero.jpg)
+
 ##Walkthrough
 Quickly build cross-platform hybrid apps for Web, iOS, Android, Windows and PWAs using the slick animations and UI components of Framework7, along with the modular, testable and extensible Aurelia Framework.
 
