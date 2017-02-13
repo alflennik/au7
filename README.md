@@ -54,40 +54,31 @@ Consult Cordova's docs for instructions on how to download platform dependencies
 
 ###Customizing for Production
 
-You can easily customize your Webpack setup. At the top of webpack.config.js, you'll notice:
+####***For more information on clean Webpack setups, [check out the blog post!](https://blog.flennik.com/the-fine-art-of-the-webpack-2-config-dc4d19d7f172)***
 
-````
-const isProduction = process.env.NODE_ENV === 'production'
-const platform = process.env.PLATFORM
-````
+You can easily customize your Webpack setup. In webpack.config.js, you'll notice:
+
+```javascript
+const isProduction = env.production === true
+const platform = env.platform
+```
 
 These variables allow you to dynamically alter your Webpack configuration, and they are fairly self-explanatory. Check out this example using isProduction:
 
-````
-{
-  test: /\.css?$/,
-  use: [
-    { loader: 'style-loader' },
-    {
-      loader: 'css-loader',
-      options: (() => {
-        // Use a self-executing code block with a return to conditionally change
-        // the configuration. In this case add sourcemaps for development only.
-        if (isProduction) return {}
-        else return { sourceMap: true }
-      })()
-    }
-  ]
-}
-````
+```javascript
+devtool: (() => {
+  if (isProduction) return 'hidden-source-map'
+  else return 'cheap-module-eval-source-map'
+})()
+```
 
-These variables allow you to easily control your config. Although `platform` is simply `default` by default, as you add new platforms to your projects it's not hard to image how easily you can change Webpack's behavior.
+These variables allow you to easily control your config. Although `platform` is simply `default` by default, as you add new platforms to your projects it's not hard to imagine how easily you can change Webpack's behavior.
 
 But what about the app itself? Can you change Aurelia's configuration based on these constants? Why, yes. It comes down to the `PRODUCTION` and `PLATFORM` constants that are set by `webpack.DefinePlugin`.
 
 Here is an example of changing Aurelia's configuration while in production:
 
-````
+```javascript
 //main.js
 if (PRODUCTION) {
   // Turn off logging in production mode.
@@ -98,44 +89,40 @@ if (PRODUCTION) {
     .basicConfiguration()
     .developmentLogging()
 }
-````
+```
 
 ###Changing the Constants
 
 You can change the constants to suit your app's unique requirements. In package.json, there are CLI commands that can easily be accessed by `npm run dev` and `npm run build`.
 
-````
+```javascript
 // package.json
 "scripts": {
-  "dev": "cross-env NODE_ENV=development PLATFORM=default webpack-dev-server -d --progress",
-  "build": "cross-env NODE_ENV=production PLATFORM=default webpack -p --progress"
-}
-````
+  "dev": "webpack-dev-server -d --env.platform=default --progress",
+  "build": "webpack -p --env.production --env.platform=default --progress"
+},
+```
 
 What if you wanted to add an `npm run dev:idea` that passed an additional IDEA constant to Aurelia while in dev mode?
 
 First, you would add the new script and add the new constant to it.
 
-````
-"dev:idea": "cross-env IDEA=true NODE_ENV=development PLATFORM=default webpack-dev-server -d --progress"
-````
-
-By the way, the command cross-env, which we are running here, allows us to set environment variables in both Bash and Windows (the syntax is different on both OSes, this standardizes it).
+```javascript
+"dev:idea": "webpack-dev-server -d --env.platform=default --env.idea --progress"
+```
 
 Then you would send the constant through to Aurelia.
 
-````
+```javascript
 // webpack.config.js
 new webpack.DefinePlugin({
   PRODUCTION: JSON.stringify(isProduction),
   PLATFORM: JSON.stringify(platform)
-
-  // if IDEA is undefined, set it to false
-  IDEA: JSON.stringify(process.env.IDEA ? true : false)
+  IDEA: JSON.stringify(env.idea === true) // set IDEA to false if undefined
 })
-````
+```
 
-Now IDEA is a globally available boolean throughout your Aurelia app that you can use to change how things work. You can run `npm run dev` for standard behavior, and `npm run dev:idea` for your new idea.
+Now `IDEA` is a globally available boolean throughout your Aurelia app that you can use to change how things work. You can run `npm run dev` for standard behavior, and `npm run dev:idea` for your new idea.
 
 A warning: changing these constants is designed allow outputting wholly-different versions of your app. This should not be used to store normal application data.
 
@@ -180,7 +167,7 @@ import '../lib/framework7.custom.js'
 ###Additional Guides. Coming Soon.
 This no-cruft project includes a minimal Webpack 2 configuration and not much else. Want to trick it out with your favorite plugins and features? Check out these guides (coming soon):
 
-- FEB 5 Add Modular SASS
-- FEB 12 Customizing App Based on Platform
-- TBD Build Your App with TDD
-- TBD Create a Progressive Web App
+- Add Modular SASS
+- Customizing App Based on Platform
+- Build Your App with TDD
+- Create a Progressive Web App
