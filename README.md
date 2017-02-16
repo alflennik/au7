@@ -20,12 +20,6 @@ We are using Framework7's included router, which supports animations.
 
 Edit the views object in app.js to add and configure new pages. It preloads your pages into the DOM using Framework7's inline pages routing mode.
 
-###Acknowledgements
-- Huge thanks to [Julien Enselme](http://www.jujens.eu/author/julien-enselme.html) who created the [foundation](https://www.jujens.eu/posts/en/2016/Mar/15/ionic2-aurelia-f7/) (on [GitHub](https://github.com/Jenselme/tests-ionic2-and-aurelia-framework7)) that I built this project on top of.
-- Thanks to [Erik Hanchett](http://www.programwitherik.com/) for his [clean Aurelia Webpack setup](https://youtu.be/FI7a6oRwUkQ).
-- Thanks to [Timo Ernst](https://www.timo-ernst.net/) for [insight into F7 routing with Frameworks](https://youtu.be/xS3G1uFXrJk).
-- And of course, thanks are due to the awesome open source libraries that have made app development so powerful and elegant. Where would we be without Aurelia, Framework7, Cordova and Webpack? The world would be much less cool, and hey, a project like this may simply be impossible.
-
 ##Setup
 
 ###Requirements
@@ -166,10 +160,128 @@ import '../lib/framework7.custom.js'
 - Run `npm remove framework7 --save`, since the node_modules version of framework7 is no longer being used. Keeping it would be confusing, so do not skip this step!
 - You can no longer update Framework7 via npm, instead update the project you downloaded from Github (you can do so via Git) and then re-export the custom build and replace the files you copied.
 
-###Additional Guides. Coming Soon.
-This no-cruft project includes a minimal Webpack 2 configuration and not much else. Want to trick it out with your favorite plugins and features? Check out these guides (coming soon):
+###Adding SASS
+First, install SASS. You will need both the webpack loader and the Node implementation.
 
-- Add Modular SASS
+```
+npm install sass-loader node-sass --save-dev
+```
+
+Now we can update the Webpack config so it understands this new scss file type.
+
+```javascript
+//webpack.config.js
+{
+  test: /\.scss$/,
+  use: [
+    { loader: 'style-loader' },
+    { loader: 'css-loader' },
+    { loader: 'sass-loader' }
+  ]
+},
+```
+
+Now we can create some SASS files. Let's create app.scss in the src folder and put in a test rule that will make the header's text blue.
+
+```css
+/* app.scss */
+.navbar {
+  color: hsl(240, 40%, 30%);
+}
+```
+
+Import your scss file in app.js: `import './app.scss'`. It feels a little odd to import a file type that needs to be compiled to work, but thanks to Webpack, this is all we need.
+
+Now when you run `npm run dev` the header's text should turn blue. You can stop here, but there are some easy optimizations we should throw in that will make your experience much nicer.
+
+####Adding sourcemaps
+Sourcemaps enable you to see the file names for all your css rules which can help you understand where the rules are coming from, as well as enable you to edit your SASS files directly from the browser.
+
+```javascript
+use: [
+  { loader: 'style-loader' },
+  {
+    loader: 'css-loader',
+    options: { sourceMap: !isProduction }
+  },
+  {
+    loader: 'sass-loader',
+    options: { sourceMap: !isProduction }
+  }
+]
+```
+
+Yes, you need to turn on sourcemaps twice, a bit of an odd quirk of Webpack.
+
+####Organizing Your SASS
+Your pages, thanks to the magic of Aurelia, are neatly organized into folders with an HTML file and a JS file. Let's add a dedicated SASS file as well to complete our component-driven design. Resist the urge to put all your SASS in a single folder, separated from where it is used. Keeping your app.scss file with your app.js and app.html files is much more convenient.
+
+However, for stuff like CSS resets, mixins and variables, a style folder will do nicely.
+
+Previously, I suggested using `import app.scss` in your app.js file. While this is good for testing, this is not the recommended way to load your SASS. The problem is that any SASS file loaded this way would not have access to your variables or mixins, which would need to be specifically imported by *all* of your SASS files. That's a lot of repeated code. If you import a variables file in twenty SASS files, suddenly changing the name of your variables file requires changing twenty import statements! It gets worse if you want to keep your mixins separated across many files to keep them organized.
+
+Instead, simply maintain a main.scss file. This is the file that is loaded by Aurelia, like this:
+
+```javascript
+// main.js
+import './main.scss'
+```
+
+And inside main.js you import all your variables, mixins and modules, in the order that you wish.
+
+```css
+/* main.scss */
+@import 'styles/reset.scss';
+@import 'styles/variables.scss';
+@import 'styles/mixins.scss';
+@import 'app.scss';
+@import 'pages/left-panel/left-panel.scss';
+@import 'pages/index/index.scss';
+```
+
+This is a setup that will allow you to elegantly build up your app to an epic size with minimal growing pains.
+
+####Giving Your SASS Override Power
+If the same CSS rule is repeated twice with the same specificity, which rule does the browser use? CSS nerds may know that the file that is loaded last is used.
+
+For example, the navbar's background color is set in framework7.material.css like this:
+
+```css
+/* framework7.material.css */
+.navbar, .toolbar, .subnavbar {
+  background: #2196f3;
+}
+```
+
+But what if we want to change the background color to red? We could write a more specific rule like this:
+
+```css
+body .navbar {
+  background: hsl(0, 70%, 60%);
+}
+```
+
+But that is not very clean, throwing bodies everywhere like a serial killer. Instead, let's move the CSS imports from the src/services/f7.js file to main.js, where we can explicitly control the order.
+
+Now at the top of the main.js file we have all our CSS dependencies, declared in order of importance:
+
+```javascript
+//main.js
+import './lib/framework7.material.css'
+import './main.scss'
+```
+
+Now, if we want to change the navbar color, we can use the selector `.navbar` instead of `body .navbar`.
+
+###Additional Guides. Coming Soon.
+Enjoying these guides? Well even more are on their way!
+
 - Customizing App Based on Platform
 - Build Your App with TDD
 - Create a Progressive Web App
+
+###Acknowledgements
+- Huge thanks to [Julien Enselme](http://www.jujens.eu/author/julien-enselme.html) who created the [foundation](https://www.jujens.eu/posts/en/2016/Mar/15/ionic2-aurelia-f7/) (on [GitHub](https://github.com/Jenselme/tests-ionic2-and-aurelia-framework7)) that I built this project on top of.
+- Thanks to [Erik Hanchett](http://www.programwitherik.com/) for his [clean Aurelia Webpack setup](https://youtu.be/FI7a6oRwUkQ).
+- Thanks to [Timo Ernst](https://www.timo-ernst.net/) for [insight into F7 routing with Frameworks](https://youtu.be/xS3G1uFXrJk).
+- And of course, thanks are due to the awesome open source libraries that have made app development so powerful and elegant. Where would we be without Aurelia, Framework7, Cordova and Webpack? The world would be much less cool, and hey, a project like this may simply be impossible.
