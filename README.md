@@ -1,13 +1,13 @@
-#Aurelia Framework7: A Lightweight Mobile App Platform
+# Aurelia Framework7: A Lightweight Mobile App Platform
 
 ![Aurelia Framework7 Hero](http://static.flennik.com/au7-hero.jpg)
 
-##Walkthrough
+## Walkthrough
 Quickly build cross-platform hybrid apps for Web, iOS, Android, Windows and PWAs using the slick animations and UI components of Framework7, along with the modular, testable and extensible Aurelia Framework.
 
 Read more about the project on the [announcement blog post](https://blog.flennik.com/a-challenger-for-ionic-aurelia-framework7-63a53e736b8a#.9qtse37zw), and [check out the demo here](http://au7.flennik.com).
 
-###How to Kick Butt
+### How to Kick Butt
 This project uses a few open source technologies. What you can do with this project depends on your mastery of their concepts and APIs. Here is your docs reading list to get the most out of this project:
 
 - Aurelia
@@ -15,23 +15,23 @@ This project uses a few open source technologies. What you can do with this proj
 - Cordova
 - Webpack (v2)
 
-###Routing
+### Routing
 We are using Framework7's included router, which supports animations.
 
 Edit the views object in app.js to add and configure new pages. It preloads your pages into the DOM using Framework7's inline pages routing mode.
 
-##Setup
+## Setup
 
-###Requirements
+### Requirements
 - NodeJS (a newer version with ES2015 support)
 - Cordova ``npm install -g cordova``
 
-###Running the App and Dev server
+### Running the App and Dev server
 - Run `npm install` to download dependencies
 - Run `npm run dev` to run Webpack Dev Server with live reload.
 - Get coding!
 
-###Building and Deploying
+### Building and Deploying
 Run `npm run build` to populate the www folder with your latest minified production build.
 
 Then use Cordova's CLI to build and deploy your app for different platforms:
@@ -46,11 +46,11 @@ And:
 
 Consult Cordova's docs for instructions on how to download platform dependencies like Java and Android Studio and deploying to the App and Play stores.
 
-##Guides
+## Guides
 
-###Customizing for Production
+### Customizing for Production
 
-####***For more information on clean Webpack setups, [check out the blog post!](https://blog.flennik.com/the-fine-art-of-the-webpack-2-config-dc4d19d7f172)***
+#### ***For more information on clean Webpack setups, [check out the blog post!](https://blog.flennik.com/the-fine-art-of-the-webpack-2-config-dc4d19d7f172)***
 
 You can easily customize your Webpack setup. In webpack.config.js, you'll notice:
 
@@ -87,7 +87,7 @@ if (PRODUCTION) {
 }
 ```
 
-###Changing the Constants
+### Changing the Constants
 
 You can change the constants to suit your app's unique requirements. In package.json, there are CLI commands that can easily be accessed by `npm run dev` and `npm run build`.
 
@@ -122,13 +122,13 @@ Now `IDEA` is a globally available boolean throughout your Aurelia app that you 
 
 A warning: changing these constants is designed allow outputting wholly-different versions of your app. This should not be used to store normal application data.
 
-###Adding a Linter
+### Adding a Linter
 
 Aurelia Framework7 is written using Standard style, JavaScript according to sensible sylistic defaults that cannot be configured. While the inability to configure may seem like a disadvantage, this is the whole appeal of Standard -- it's standard, designed to end the never-ending debates about what clean code actually looks like.
 
 To install standard into your project, run `npm install --save-dev standard eslint` and add some linting to your code editor. [Here are the instructions for Atom](https://atom.io/packages/linter-js-standard). You will want to check the option to only use the linter when package.json includes Standard as a dependency, or else it will complain loudly about any and all of your current existing projects.
 
-###Optimizing the File Size
+### Optimizing the File Size
 
 Even if you're developing for the app store, you will see advantages from some sensible optimization.
 
@@ -138,11 +138,11 @@ Even if you're developing for the app store, you will see advantages from some s
 
 There are simple targets for optimization that will allow a dramatic slimming of the overall package size.
 
-####Removing Framework7's color schemes (Saves 368KB)
+#### Removing Framework7's color schemes (Saves 368KB)
 
 The file src/services/f7.js imports the dependencies necessary for Framework7. Simply comment out the line `import 'framework7/dist/css/framework7.material.colors.css'` and save 368KB. You lose access to Framework7's color schemes, so you will need to create custom CSS to achieve the same color customization. This, in my view, is a minor price to pay for such dramatic savings in file space.
 
-####Use a Custom Framework7 Build (Saves Up to 250KB)
+#### Use a Custom Framework7 Build (Saves Up to 250KB)
 
 An excellent feature of Framework7 is the support for custom builds. Let's say you want to use Framework7's page animations and routing, but you have no use for its accordions, icon library, sliders, datepickers, etc. In this case you could remove 250KB by removing all optional components... giving you more control and responsibility over the UI components you want to use. You also have the power to specify a list of components you are using.
 
@@ -160,7 +160,7 @@ import '../lib/framework7.custom.js'
 - Run `npm remove framework7 --save`, since the node_modules version of framework7 is no longer being used. Keeping it would be confusing, so do not skip this step!
 - You can no longer update Framework7 via npm, instead update the project you downloaded from Github (you can do so via Git) and then re-export the custom build and replace the files you copied.
 
-###Adding SASS
+### Adding SASS
 First, install SASS. You will need both the webpack loader and the Node implementation.
 
 ```
@@ -194,7 +194,7 @@ Import your scss file in app.js: `import './app.scss'`. It feels a little odd to
 
 Now when you run `npm run dev` the header's text should turn blue. You can stop here, but there are some easy optimizations we should throw in that will make your experience much nicer.
 
-####Adding sourcemaps
+#### Adding sourcemaps
 Sourcemaps enable you to see the file names for all your css rules which can help you understand where the rules are coming from, as well as enable you to edit your SASS files directly from the browser.
 
 ```javascript
@@ -213,7 +213,7 @@ use: [
 
 Yes, you need to turn on sourcemaps twice, a bit of an odd quirk of Webpack.
 
-####Organizing Your SASS
+#### Organizing Your SASS
 Your pages, thanks to the magic of Aurelia, are neatly organized into folders with an HTML file and a JS file. Let's add a dedicated SASS file as well to complete our component-driven design. Resist the urge to put all your SASS in a single folder, separated from where it is used. Keeping your app.scss file with your app.js and app.html files is much more convenient.
 
 However, for stuff like CSS resets, mixins and variables, a style folder will do nicely.
@@ -241,7 +241,7 @@ And inside main.js you import all your variables, mixins and modules, in the ord
 
 This is a setup that will allow you to elegantly build up your app to an epic size with minimal growing pains.
 
-####Giving Your SASS Override Power
+#### Giving Your SASS Override Power
 If the same CSS rule is repeated twice with the same specificity, which rule does the browser use? CSS nerds may know that the file that is loaded last is used.
 
 For example, the navbar's background color is set in framework7.material.css like this:
@@ -273,14 +273,14 @@ import './main.scss'
 
 Now, if we want to change the navbar color, we can use the selector `.navbar` instead of `body .navbar`.
 
-###Additional Guides. Coming Soon.
+### Additional Guides. Coming Soon.
 Enjoying these guides? Well even more are on their way!
 
 - Customizing App Based on Platform
 - Build Your App with TDD
 - Create a Progressive Web App
 
-###Acknowledgements
+### Acknowledgements
 - Huge thanks to [Julien Enselme](http://www.jujens.eu/author/julien-enselme.html) who created the [foundation](https://www.jujens.eu/posts/en/2016/Mar/15/ionic2-aurelia-f7/) (on [GitHub](https://github.com/Jenselme/tests-ionic2-and-aurelia-framework7)) that I built this project on top of.
 - Thanks to [Erik Hanchett](http://www.programwitherik.com/) for his [clean Aurelia Webpack setup](https://youtu.be/FI7a6oRwUkQ).
 - Thanks to [Timo Ernst](https://www.timo-ernst.net/) for [insight into F7 routing with Frameworks](https://youtu.be/xS3G1uFXrJk).
